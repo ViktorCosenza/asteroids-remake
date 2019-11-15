@@ -6,7 +6,7 @@ var maxEdges = 20
 var minAsteroidSize = 25 
 var maxAsteroidSize = 100
 var maxJitter = 15
-var maxSpeed = 15
+var maxSpeed = 5
 
 function setup() {
   ship = new Ship()
@@ -21,7 +21,6 @@ function setup() {
     )
   )
   createCanvas(windowWidth, windowHeight)
-  console.log(asteroids)
 }
 
 function draw() {
