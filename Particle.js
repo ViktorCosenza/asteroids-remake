@@ -14,9 +14,10 @@ class Particle extends Thing {
 
   render () {
     this.tick()
-    noStroke()
-    fill(255, 200, 0, this.alpha)
-    
-    circle(this.pos.x, this.pos.y, this.size)
+    push()
+      stroke(255, 200, 0, this.alpha)
+      strokeWeight(this.size)
+      point(this.pos.x, this.pos.y)
+    pop()  
   }
 }

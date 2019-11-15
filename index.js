@@ -10,7 +10,7 @@ var maxSpeed = 5
 
 function setup() {
   ship = new Ship()
-  asteroids = Array(5).fill(0).map(e => 
+  asteroids = Array(50).fill(0).map(e => 
     new Asteroid(
       random(windowWidth), 
       random(windowHeight), 
@@ -20,7 +20,7 @@ function setup() {
       random(maxSpeed)
     )
   )
-  createCanvas(windowWidth, windowHeight)
+  createCanvas(window.innerWidth - 25, window.innerHeight - 25)
 }
 
 function draw() {
@@ -37,6 +37,9 @@ function keyReleased () {
       break
     case UP_ARROW:
       ship.acceleration = 0
+      break
+    case 32: /* SPACEBAR */
+      ship.isShooting = false
   }
 }
 
@@ -50,6 +53,9 @@ function keyPressed () {
       break
     case UP_ARROW:
       ship.acceleration = 1
+      break
+    case 32: /* SPACEBAR */
+      ship.isShooting = true
   }
 }
 
