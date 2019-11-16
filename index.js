@@ -3,17 +3,19 @@ var ship
 var asteroids = []
 var minEdges = 8
 var maxEdges = 20
-var minAsteroidSize = 25 
+var minAsteroidSize = 25
 var maxAsteroidSize = 100
 var maxJitter = 15
 var maxSpeed = 5
 
+var numAsteroids = 1
+
 function setup() {
   ship = new Ship()
-  asteroids = Array(50).fill(0).map(e => 
+  asteroids = Array(numAsteroids).fill(0).map(e =>
     new Asteroid(
-      random(windowWidth), 
-      random(windowHeight), 
+      random(windowWidth),
+      random(windowHeight),
       random(minAsteroidSize, maxAsteroidSize),
       random(8, maxEdges) | 0,
       random(maxJitter),
@@ -25,11 +27,33 @@ function setup() {
 
 function draw() {
   background(0)
+  const shipHasCollided = asteroids.find(a => a.hasCollided(ship))
+  if (shipHasCollided) ship.hit(1)
+
+  const asteroidHits = ship.gun.checkHit(asteroids)
+  
   ship.render()
   asteroids.forEach(a => a.render())
+
+  drawStats(ship, asteroids)
 }
 
-function keyReleased () {
+function drawStats(ship, asteroids) {
+  fill(255);
+  stroke(0);
+  text(`HEALTH: ${ship.health}`, 10, height - 10)
+  text(`ASTEROIDS: ${asteroids.length}`, 10, height - 25)
+  drawFramerate()
+}
+
+function drawFramerate() {
+  const fps = getFrameRate()
+  fill(255);
+  stroke(0);
+  text("FPS: " + fps.toFixed(2), 10, 10);
+}
+
+function keyReleased() {
   switch (keyCode) {
     case RIGHT_ARROW:
     case LEFT_ARROW:
@@ -43,7 +67,7 @@ function keyReleased () {
   }
 }
 
-function keyPressed () {
+function keyPressed() {
   switch (keyCode) {
     case RIGHT_ARROW:
       ship.rotation = 0.1
