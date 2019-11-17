@@ -32,6 +32,9 @@ function draw() {
   const shipHasCollided = asteroids.find(a => a.hasCollided(ship))
   if (shipHasCollided) ship.hit(1)
 
+  const destroyed = asteroids.filter(a => a.destroyed)
+  const newAsteroids = destroyed.map(a => a.breakup()).flat()
+  asteroids = [...asteroids.filter(a => !a.destroyed), ...newAsteroids]
   ship.gun.checkHit(asteroids)
   
   ship.render()

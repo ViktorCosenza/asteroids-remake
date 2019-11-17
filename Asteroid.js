@@ -1,11 +1,15 @@
 class Asteroid extends PolygonThing {
-  constructor({ x, y, size = 10, edges = 10, jitter = 15, velocity = 0.1, health = 1 }) {
+  constructor({ x, y, size = 10, edges = 10, jitter = 15, velocity = 0.1, health = 1, numBreakups = 3}) {
     super(
       x,
       y,
       p5.Vector.random2D().setMag(random(velocity)),
       genJitteredEllipse(edges, size, jitter)
     )
+    this.numBreakups = numBreakups
+    this.numEdges = edges
+    this.size = size
+    this.jitter = jitter
     this.health = health
     this.destroyed = false
     this.size = size
@@ -16,17 +20,18 @@ class Asteroid extends PolygonThing {
     if (this.health < 1) this.destroyed = true
   }
 
-  breakup(numAsteroids = 0) {
-    if (numAsteroids === 0) numAsteroids = random(1, this.size/4) | 1
-    return Array(2).fill(0).map(e => 
+  breakup(numAsteroids = 10) {
+    if (this.numBreakups === 0) return []
+    return Array(numAsteroids).fill(0).map(e => 
       new Asteroid({
-        x: this.x + random(-this.size, this.size),
-        y: this.y + random(-this.size, this.size),
-        size: random(this.size / 2),
-        edges: random(this.edges / 2) | 1,
-        jitter: random(this.jitter),
-        velocity: random(this.velocity),
-        health: random(1, this.health / 2) | 1
+        x: this.pos.x + random(-this.size, this.size),
+        y: this.pos.y + random(-this.size, this.size),
+        size: random(this.size / 3, this.size/1.5),
+        edges: this.numEdges + random(-this.numEdges/2, +this.numEdges/2) | 1,
+        jitter: this.jitter + random(-this.jitter/2, this.jitter/2),
+        velocity: this.velocity.mag(),
+        health: random(1, this.health / 2) | 1,
+        numBreakups: this.numBreakups - 1
       }))
   }
 
