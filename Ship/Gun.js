@@ -22,14 +22,13 @@ class StandardGun {
   }
 
   checkHit(asteroids) {
-    let hits = this.bullets.reduce((prev, bullet) => {    
-      const idx = asteroids.findIndex(a => collidePointPoly(bullet.pos.x, bullet.pos.y, a.globalEdges))
-      if (idx < 0) return prev
-      return [...prev, idx]  
-    }, []
-    )
-    if (hits) console.log(hits)
-    return hits
+    this.bullets = this.bullets.filter(b => {
+      const hitAsteroid = asteroids.find(a => collidePointPoly(b.pos.x, b.pos.y, a.globalEdges))
+      
+      if (hitAsteroid)
+        hitAsteroid.hit(this.dmg)
+      return !hitAsteroid
+    })
   }
 
   shoot(position, heading) {

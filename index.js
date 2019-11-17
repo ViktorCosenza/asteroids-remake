@@ -7,20 +7,22 @@ var minAsteroidSize = 25
 var maxAsteroidSize = 100
 var maxJitter = 15
 var maxSpeed = 5
+var maxHealth = 10
 
-var numAsteroids = 1
+var numAsteroids = 10
 
 function setup() {
   ship = new Ship()
   asteroids = Array(numAsteroids).fill(0).map(e =>
-    new Asteroid(
-      random(windowWidth),
-      random(windowHeight),
-      random(minAsteroidSize, maxAsteroidSize),
-      random(8, maxEdges) | 0,
-      random(maxJitter),
-      random(maxSpeed)
-    )
+    new Asteroid({
+      x: random(windowWidth),
+      y: random(windowHeight),
+      size: random(minAsteroidSize, maxAsteroidSize),
+      edges: random(8, maxEdges) | 0,
+      jitter: random(maxJitter),
+      velocity: random(maxSpeed),
+      health: random(maxHealth) + 1
+    })
   )
   createCanvas(window.innerWidth - 25, window.innerHeight - 25)
 }
@@ -30,7 +32,7 @@ function draw() {
   const shipHasCollided = asteroids.find(a => a.hasCollided(ship))
   if (shipHasCollided) ship.hit(1)
 
-  const asteroidHits = ship.gun.checkHit(asteroids)
+  ship.gun.checkHit(asteroids)
   
   ship.render()
   asteroids.forEach(a => a.render())
