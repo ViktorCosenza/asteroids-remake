@@ -23,8 +23,9 @@ class Ship extends PolygonThing {
     this.acceleration = 0
     this.maxSpeed = 10
     this.isShooting = false
-    this.gun = new StandardGun()
+    this.gun = new BetterGun()
     this.engine = new EngineThruster(this.pos, this.size)
+    this.explosions = []
   }
 
 
@@ -39,8 +40,10 @@ class Ship extends PolygonThing {
 
   hit (dmg=1) {
     if (this.currentHitCooldown) return
+    this.explosions = [...this.explosions, new Explosion({x:this.pos.x, y:this.pos.y})]
     this.health -= dmg
     this.currentHitCooldown = this.hitCooldown
+    return ship.health === 0
   }
 
   render() {
@@ -54,6 +57,8 @@ class Ship extends PolygonThing {
     pop()
     this.engine.render(this.acceleration, this.pos.copy(), this.heading)
     this.gun.render()
+    this.explosions.forEach(e => e.render())
+    this.explosions.filter(e => !e.finished)
   }
 
 

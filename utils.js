@@ -5,3 +5,6 @@ Array(n).fill(0).map((e, idx) => {
   const y = size * sin(theta) + random(-jitter, jitter)
   return createVector(x, y)
 })
+
+const random_float = (min, max) => ((Math.random() * max) + min)
+const random_int = (min, max) => random_float(min, max) | 0

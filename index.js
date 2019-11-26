@@ -9,7 +9,7 @@ var maxJitter = 15
 var maxSpeed = 5
 var maxHealth = 10
 
-var numAsteroids = 10
+var numAsteroids = random_int(1, 2)
 
 function setup() {
   ship = new Ship()
@@ -21,7 +21,8 @@ function setup() {
       edges: random(8, maxEdges) | 0,
       jitter: random(maxJitter),
       velocity: random(maxSpeed),
-      health: random(maxHealth) + 1
+      health: random(maxHealth) + 1,
+      numBreakups: random_int(0, 5)
     })
   )
   createCanvas(window.innerWidth - 25, window.innerHeight - 25)
@@ -30,16 +31,18 @@ function setup() {
 function draw() {
   background(0)
   const shipHasCollided = asteroids.find(a => a.hasCollided(ship))
-  if (shipHasCollided) ship.hit(1)
+  let gameOver
+  if (shipHasCollided) gameOver = ship.hit(1)
+  if (gameOver) window.location.reload()
+  if (asteroids.length === 0) window.location.reload()
 
   const destroyed = asteroids.filter(a => a.destroyed)
   const newAsteroids = destroyed.map(a => a.breakup()).flat()
   asteroids = [...asteroids.filter(a => !a.destroyed), ...newAsteroids]
   ship.gun.checkHit(asteroids)
-  
+
   ship.render()
   asteroids.forEach(a => a.render())
-
   drawStats(ship, asteroids)
 }
 

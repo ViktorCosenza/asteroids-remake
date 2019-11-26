@@ -63,7 +63,7 @@ class StandardBullet {
     this.tick()
     push()
     stroke(255)
-    strokeWeight(2)
+    strokeWeight(5)
     point(this.pos)
     pop()
   }
