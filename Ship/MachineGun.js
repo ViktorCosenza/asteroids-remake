@@ -1,5 +1,5 @@
-class StandardGun {
-  constructor(dmg=1, range=100, velocity=10, cooldown=30, ammo=Infinity, bulletColor=[200, 255, 100], bulletSize=2) {
+class MachineGun {
+  constructor(dmg=0.1, range=50, velocity=5, cooldown=2, ammo=Infinity, bulletColor=[255, 200, 0]) {
     this.dmg = dmg
     this.range = range
     this.velocity = velocity
@@ -8,7 +8,7 @@ class StandardGun {
     this.bullets = []
     this.ammo = ammo
     this.bulletColor = bulletColor
-    this.size = bulletSize
+    this.bulletSize = 2
   }
 
   tick() {
@@ -41,33 +41,8 @@ class StandardGun {
 
     this.bullets = [
       ...this.bullets,
-      new StandardBullet(this.dmg, this.range, this.velocity, position, heading, this.bulletColor, this.size)
+      new StandardBullet(this.dmg, this.range, this.velocity, position, heading + random_float(0, 0.1), this.bulletColor, this.bulletSize)
     ]
     this.currentCooldown = this.cooldown
-  }
-}
-
-class StandardBullet {
-  constructor(dmg, range, velocity, position, heading, color, size=1) {
-    this.dmg = dmg
-    this.range = range
-    this.velocity = p5.Vector.fromAngle(heading).mult(velocity)
-    this.pos = position
-    this.color = color
-    this.size = size
-  }
-
-  tick() {
-    --this.range
-    this.pos.add(this.velocity)
-  }
-
-  render() {
-    this.tick()
-    push()
-    stroke(...this.color)
-    strokeWeight(this.size)
-    point(this.pos)
-    pop()
   }
 }
