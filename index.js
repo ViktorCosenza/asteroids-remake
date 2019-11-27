@@ -9,7 +9,7 @@ var maxJitter = 15
 var maxSpeed = 5
 var maxHealth = 10
 
-var numAsteroids = random_int(1, 2)
+var numAsteroids = random_int(1, 15)
 
 function setup() {
   ship = new Ship()

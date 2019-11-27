@@ -23,7 +23,8 @@ class Ship extends PolygonThing {
     this.acceleration = 0
     this.maxSpeed = 10
     this.isShooting = false
-    this.gun = new MachineGun()
+    const possibleGuns = [MachineGun, StandardGun, DoubleGun]
+    this.gun = new (possibleGuns[random_int(0, 3)])()
     this.engine = new EngineThruster(this.pos, this.size)
     this.explosions = []
   }
